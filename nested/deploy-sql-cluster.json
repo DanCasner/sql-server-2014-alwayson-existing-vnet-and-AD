@@ -103,7 +103,7 @@
 		},
 		{
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[concat(variables('sqlStorageAccountPrefix'), '0', copyindex(1))]",
+			"name": "[concat(variables('sqlStorageAccountPrefix'),  copyindex())]",
 			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "storageAccountLoop",
@@ -181,7 +181,7 @@
 			}
 		},
 		{
-			"name": "[concat(variables('sqlNamePrefix'), '0', copyindex(1), '-nic')]",
+			"name": "[concat(variables('sqlNamePrefix'), copyindex(), '-nic')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[resourceGroup().location]",
 			"apiVersion": "2015-06-15",
@@ -233,15 +233,15 @@
 		{
 			"apiVersion": "2015-06-15",
 			"type": "Microsoft.Compute/virtualMachines",
-			"name": "[concat(variables('sqlNamePrefix'),'0', copyindex(1))]",
+			"name": "[concat(variables('sqlNamePrefix'), copyindex())]",
 			"location": "[resourceGroup().location]",
 			"copy": {
 				"name": "virtualMachineLoop",
 				"count": 2
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts',concat(variables('sqlStorageAccountPrefix'),'0', copyindex(1)))]",
-				"[resourceId('Microsoft.Network/networkInterfaces',concat(variables('sqlNamePrefix'), '0', copyindex(1), '-nic'))]",
+				"[resourceId('Microsoft.Storage/storageAccounts',concat(variables('sqlStorageAccountPrefix'), copyindex()))]",
+				"[resourceId('Microsoft.Network/networkInterfaces',concat(variables('sqlNamePrefix'), copyindex(), '-nic'))]",
 				"[resourceId('Microsoft.Compute/availabilitySets', variables('sqlAvailabilitySetName'))]"
 			],
 			"properties": {
@@ -252,7 +252,7 @@
 					"id": "[resourceId('Microsoft.Compute/availabilitySets', variables('sqlAvailabilitySetName'))]"
 				},
 				"osProfile": {
-					"computerName": "[concat(variables('sqlNamePrefix'), '0', copyindex(1))]",
+					"computerName": "[concat(variables('sqlNamePrefix'),  copyindex())]",
 					"adminUsername": "[parameters('adminUsername')]",
 					"adminPassword": "[parameters('adminPassword')]"
 				},
@@ -264,9 +264,9 @@
 						"version": "[parameters('windowsImageVersion')]"
 					},
 					"osDisk": {
-						"name": "[concat(variables('sqlNamePrefix'), '0', copyindex(1), '-osdisk.vhd')]",
+						"name": "[concat(variables('sqlNamePrefix'), copyindex(), '-osdisk.vhd')]",
 						"vhd": {
-							"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),'0',copyIndex(1)),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'), '0', copyindex(1), '-osdisk.vhd')]"
+							"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),copyIndex()),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'), copyindex(), '-osdisk.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
@@ -274,9 +274,9 @@
 					"dataDisks": [
 						{
 							"vhd": {
-								"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),'0',copyIndex(1)),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'), '0', copyindex(1), '-datadisk1.vhd')]"
+								"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),copyIndex()),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'),  copyindex(), '-datadisk1.vhd')]"
 							},
-							"name": "[concat(variables('sqlNamePrefix'), '0', copyindex(1), '-datadisk1.vhd')]",
+							"name": "[concat(variables('sqlNamePrefix'), copyindex(), '-datadisk1.vhd')]",
 							"caching": "None",
 							"createOption": "Empty",
 							"diskSizeGB": "[variables('sqlDiskSize')]",
@@ -284,9 +284,9 @@
 						},
 						{
 							"vhd": {
-								"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix'),'0',copyIndex(1)),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'), '0', copyindex(1), '-logdisk1.vhd')]"
+								"uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/',variables('sqlStorageAccountPrefix') ,copyIndex()),variables('apiVersionStorage')).primaryEndpoints.blob, variables('vmContainerName'), '/', variables('sqlNamePrefix'),  copyindex(), '-logdisk1.vhd')]"
 							},
-							"name": "[concat(variables('sqlNamePrefix'), '0', copyindex(1), '-logdisk1.vhd')]",
+							"name": "[concat(variables('sqlNamePrefix'),  copyindex(), '-logdisk1.vhd')]",
 							"caching": "None",
 							"createOption": "Empty",
 							"diskSizeGB": "[variables('sqlDiskSize')]",
@@ -297,7 +297,7 @@
 				"networkProfile": {
 					"networkInterfaces": [
 						{
-							"id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('sqlNamePrefix'), '0', copyindex(1), '-nic'))]"
+							"id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('sqlNamePrefix'),  copyindex(), '-nic'))]"
 						}
 					]
 				}
