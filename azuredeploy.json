@@ -4,9 +4,9 @@
   "parameters": {
     "namePrefix": {
       "type": "string",
-      "maxLength": 8,
+      "maxLength": 3,
       "metadata": {
-        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+        "description": "Naming prefix for each new resource created. 3-char max, lowercase alphanumeric"
       }
     },
     "storageAccountType": {
@@ -27,14 +27,14 @@
       "metadata": {
         "description": "Size of the SQL VMs to be created"
       },
-      "defaultValue": "Standard_DS3"
+      "defaultValue": "Standard_DS3_v2"
     },
     "sqlWitnessVMSize": {
       "type": "string",
       "metadata": {
         "description": "Size of the Witness VM to be created"
       },
-      "defaultValue": "Standard_DS1"
+      "defaultValue": "Standard_DS1_v2"
     },
     "existingDomainName": {
       "type": "string",
